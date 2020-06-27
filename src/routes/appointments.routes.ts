@@ -1,24 +1,28 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 import CreateAppointmentsService from '../services/CreateAppointmentsService';
 
 const appointmentsRouter = Router();
-const appointmentsRepository = new AppointmentsRepository();
 
-appointmentsRouter.post('/', (request, response) => {
+appointmentsRouter.get('/', async (request, response) => {
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+    const appointments = await appointmentsRepository.find();
+    return response.json(appointments);
+});
+
+appointmentsRouter.post('/', async (request, response) => {
     try {
-        const createAppointment = new CreateAppointmentsService(
-            appointmentsRepository,
-        );
+        const createAppointmentsService = new CreateAppointmentsService();
 
-        const { provider, date } = request.body;
+        const { provider_id, date } = request.body;
 
         const parsedDate = parseISO(date);
 
         return response.json(
-            createAppointment.execute({
-                provider,
+            await createAppointmentsService.execute({
+                provider_id,
                 date: parsedDate,
             }),
         );
@@ -27,15 +31,12 @@ appointmentsRouter.post('/', (request, response) => {
     }
 });
 
-appointmentsRouter.get('/:id', (request, response) => {
+appointmentsRouter.get('/:id', async (request, response) => {
     const { id } = request.params;
-    const appointment = appointmentsRepository.find(id);
-    return response.json(appointment);
-});
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
 
-appointmentsRouter.get('/', (request, response) => {
-    const appointments = appointmentsRepository.all();
-    return response.json(appointments);
+    const appointment = await appointmentsRepository.findByIds([id]);
+    return response.json(appointment);
 });
 
 export default appointmentsRouter;
