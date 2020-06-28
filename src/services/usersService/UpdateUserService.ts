@@ -12,13 +12,18 @@ interface Request {
 }
 
 export default class UpdateUserService {
-    public async execute({ id, name, email, password }: Request) {
+    public async execute({
+        id,
+        name,
+        email,
+        password,
+    }: Request): Promise<User> {
         const usersRepository = getRepository(User);
-        const checkUsersExists = await usersRepository.findOne({
+        const checkUsersExists = await usersRepository.find({
             where: { id, email },
         });
 
-        if (checkUsersExists) {
+        if (checkUsersExists.length > 1) {
             throw Error('Email address already in use.');
         }
         const user = usersRepository.create({

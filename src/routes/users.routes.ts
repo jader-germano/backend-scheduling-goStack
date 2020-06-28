@@ -6,9 +6,13 @@ import CreateUserService from '../services/usersService/CreateUserService';
 const usersRouter = Router();
 
 usersRouter.get('/', async (request, response) => {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const users = await usersRepository.find();
-    return response.json(users);
+    try {
+        const usersRepository = getCustomRepository(UsersRepository);
+        const users = await usersRepository.find();
+        return response.json(users);
+    } catch (e) {
+        return response.status(400).json({ error: e.message });
+    }
 });
 
 usersRouter.post('/', async (request, response) => {
@@ -26,13 +30,17 @@ usersRouter.post('/', async (request, response) => {
 });
 
 usersRouter.get('/:id', async (request, response) => {
-    const { id } = request.params;
-    const usersRepository = getCustomRepository(UsersRepository);
+    try {
+        const { id } = request.params;
+        const usersRepository = getCustomRepository(UsersRepository);
 
-    const appointment = await usersRepository.findOne({
-        where: { id },
-    });
-    return response.json(appointment);
+        const appointment = await usersRepository.findOne({
+            where: { id },
+        });
+        return response.json(appointment);
+    } catch (e) {
+        return response.status(400).json({ error: e.message });
+    }
 });
 
 export default usersRouter;
