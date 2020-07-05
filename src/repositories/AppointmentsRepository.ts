@@ -1,4 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
+import AppError from '../errors/AppError';
 import Appointment from '../models/Appointment';
 
 @EntityRepository(Appointment)
@@ -16,6 +17,17 @@ class AppointmentsRepository extends Repository<Appointment> {
     public async findAll(): Promise<Appointment[] | null> {
         const findAppointment = await this.find();
         return findAppointment || null;
+    }
+
+    public async removeAppointment(id: string): Promise<boolean> {
+        const toRemove = await this.findOne({
+            where: { id },
+        });
+        if (toRemove === null) {
+            throw new AppError(`Appointments with id '${id}' not found.`);
+        }
+        await this.delete(id);
+        return true;
     }
 }
 

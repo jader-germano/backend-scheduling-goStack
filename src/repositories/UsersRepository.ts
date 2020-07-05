@@ -3,7 +3,7 @@ import User from '../models/User';
 
 @EntityRepository(User)
 export default class UsersRepository extends Repository<User> {
-    public async findAllUsers(page: number): Promise<User[] | null> {
+    public async findAllUsers(): Promise<User[] | null> {
         return (await this.find()) || null;
     }
 
