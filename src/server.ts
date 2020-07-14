@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import 'express-async-errors';
 
 import AppError from './errors/AppError';
@@ -13,6 +14,7 @@ const PORT = 3333;
 
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.directory));
+app.use(cors());
 app.use(routes);
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
@@ -24,10 +26,11 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     }
     return response.status(500).json({
         status: 'error',
-        message: 'Internal server error',
+        message: `Internal server error. Details: ${err}`,
     });
 });
 
 app.listen(3333, () => {
+    // eslint-disable-next-line no-console
     console.log(`Server started on port ${PORT}`);
 });

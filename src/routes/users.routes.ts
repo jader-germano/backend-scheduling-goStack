@@ -11,12 +11,6 @@ import UpdateAvatarUserService from '../services/usersService/UpdateAvatarUserSe
 const usersRouter = Router();
 const upload = multer(uploadConfig);
 
-usersRouter.get('/', async (request, response) => {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const users = await usersRepository.find();
-    return response.json(users);
-});
-
 usersRouter.post('/', async (request, response) => {
     const createUsersService = new CreateUserService();
 
@@ -27,15 +21,40 @@ usersRouter.post('/', async (request, response) => {
     );
 });
 
-usersRouter.get('/:id', async (request, response) => {
+usersRouter.get('/', ensureAuthenticated, async (request, response) => {
+    const usersRepository = getCustomRepository(UsersRepository);
+    const users = await usersRepository.find();
+    return response.json(users);
+});
+
+usersRouter.get('/:id', ensureAuthenticated, async (request, response) => {
     const { id } = request.params;
 
     const usersRepository = getCustomRepository(UsersRepository);
 
-    const appointment = await usersRepository.findOne({
+    const user = await usersRepository.findOne({
         where: { id },
     });
-    return response.json(appointment);
+
+    const returnResponse = user || {
+        message: `No user found.`,
+        response: `id: ${id}`,
+    };
+
+    return response.json(returnResponse);
+});
+
+usersRouter.delete('/:id', ensureAuthenticated, async (request, response) => {
+    const { id } = request.params;
+    const usersRepository = getCustomRepository(UsersRepository);
+
+    const removed = await usersRepository.removeUser(id);
+
+    const removedStatus = {
+        message: `Successfully deleted: ${removed}`,
+        response: `${removed}`,
+    };
+    return response.json(removedStatus);
 });
 
 usersRouter.patch(

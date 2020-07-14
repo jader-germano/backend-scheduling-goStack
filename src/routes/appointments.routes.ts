@@ -35,8 +35,28 @@ appointmentsRouter.get('/:id', async (request, response) => {
     const { id } = request.params;
     const appointmentsRepository = getCustomRepository(AppointmentsRepository);
 
-    const appointment = await appointmentsRepository.findByIds([id]);
-    return response.json(appointment);
+    const appointment = await appointmentsRepository.findOne({
+        where: { id },
+    });
+
+    const returnResponse = appointment || {
+        message: `No appointment found.`,
+        response: `id: ${id}`,
+    };
+    return response.json(returnResponse);
+});
+
+appointmentsRouter.delete('/:id', async (request, response) => {
+    const { id } = request.params;
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+
+    const removed = await appointmentsRepository.removeAppointment(id);
+
+    const removedStatus = {
+        message: `Successfully deleted: ${removed}`,
+        response: `${removed}`,
+    };
+    return response.json(removedStatus);
 });
 
 export default appointmentsRouter;
