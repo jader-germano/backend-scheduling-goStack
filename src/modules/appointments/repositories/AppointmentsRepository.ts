@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
-import AppError from '../errors/AppError';
-import Appointment from '../models/Appointment';
+import AppError from '@shared/errors/AppError';
+import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 
 @EntityRepository(Appointment)
 class AppointmentsRepository extends Repository<Appointment> {
