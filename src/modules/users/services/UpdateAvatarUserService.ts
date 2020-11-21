@@ -4,6 +4,7 @@ import fs from 'fs';
 import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
 import uploadConfig from '@config/upload';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface Request {
     user_id: string;
@@ -11,9 +12,12 @@ interface Request {
 }
 
 export default class UpdateAvatarUserService {
+    constructor(private usersRepository: IUsersRepository) {
+
+    }
+
     public async execute({ user_id, avatarFileName }: Request): Promise<User> {
-        const usersRepository = getRepository(User);
-        const user = await usersRepository.findOne(user_id);
+        const user = await this.usersRepository.findUserById(user_id);
 
         if (!user) {
             throw new AppError(
@@ -34,9 +38,11 @@ export default class UpdateAvatarUserService {
                 await fs.promises.unlink(userAvatarFilePath);
             }
         }
+
         user.avatar = avatarFileName;
-        await usersRepository.save(user);
+        await this.usersRepository.saveUser(user);
         delete user.password;
+
         return user;
     }
 }
