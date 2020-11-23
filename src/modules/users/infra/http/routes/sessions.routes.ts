@@ -1,20 +1,8 @@
+import SessionController from '@modules/users/infra/http/controllers/SessionController';
 import { Router } from 'express';
-import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 const sessionsRouter = Router();
-
-sessionsRouter.post('/', async (request, response) => {
-    const usersRepository = new UsersRepository();
-    const { email, password } = request.body;
-
-    const authenticateUser = new AuthenticateUserService(usersRepository);
-
-    const { user, token } = await authenticateUser.execute({
-        email,
-        password,
-    });
-    return response.json({ user, token });
-});
+const sessionController = new SessionController();
+sessionsRouter.post('/', sessionController.authenticate);
 
 export default sessionsRouter;

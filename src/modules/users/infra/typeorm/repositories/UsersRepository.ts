@@ -28,7 +28,6 @@ export default class UsersRepository implements IUsersRepository {
             where: { id },
         });
         return user || undefined;
-
     }
 
     public async findAllUsers(): Promise<User[] | undefined> {
@@ -42,7 +41,6 @@ export default class UsersRepository implements IUsersRepository {
             password,
         });
         return user;
-
     }
 
     public async saveUser({
@@ -54,7 +52,7 @@ export default class UsersRepository implements IUsersRepository {
         return this.ormRepository.save({ id, name, email, password });
     }
 
-    public async removeUser(id: string): Promise<boolean> {
+    public async delete(id: string): Promise<boolean | undefined> {
         const toRemove = await this.ormRepository.findOne({
             where: { id },
         });

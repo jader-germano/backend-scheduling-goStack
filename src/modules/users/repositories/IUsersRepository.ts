@@ -14,5 +14,5 @@ export default interface IUsersRepository {
 
     saveUser(user: User): Promise<User | undefined>;
 
-    removeUser(id: string): Promise<boolean>;
+    delete(id: string): Promise<boolean | undefined>;
 }

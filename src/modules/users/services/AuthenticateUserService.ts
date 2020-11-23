@@ -4,19 +4,23 @@ import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
     email: string;
     password: string;
 }
 
-interface IResponse {
+export interface IResponse {
     user: User;
     token: string;
 }
 
+@injectable()
 class AuthenticateUserService {
-    constructor(private usersRepository: IUsersRepository) {
+    constructor(
+        @inject('UsersRepository')
+        private usersRepository: IUsersRepository) {
 
     }
 
@@ -34,6 +38,7 @@ class AuthenticateUserService {
         }
 
         delete user.password;
+
         const { secret, expiresIn } = authConfig.jwt;
         const token = sign({}, secret, {
             subject: user.id,
