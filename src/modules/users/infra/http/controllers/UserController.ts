@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 export default class UserController {
+
     public async save(request: Request, response: Response) {
         const createUsersService = container.resolve(CreateUserService);
 

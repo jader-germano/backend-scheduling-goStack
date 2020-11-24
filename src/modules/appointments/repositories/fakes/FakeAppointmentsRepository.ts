@@ -19,7 +19,7 @@ class FakeAppointmentsRepository implements IAppointmentsRepository {
     }
 
     findAll(): Promise<Appointment[] | undefined> {
-        return Promise.resolve(undefined);
+        return Promise.resolve(this.appointments);
     }
 
     public async findByDateAndProvider(

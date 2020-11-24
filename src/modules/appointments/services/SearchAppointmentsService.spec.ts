@@ -39,9 +39,13 @@ describe('SearchAppointment', () => {
         const arrayAppointment = [];
         arrayAppointment.push(appointment);
         const arrayResponseAppointment = await searchAppointment.searchAll();
+        console.log(arrayResponseAppointment);
 
-        expect(arrayResponseAppointment).toBeGreaterThanOrEqual(
-            arrayAppointment.length,
+        expect(arrayResponseAppointment).toContain(
+            appointment,
+        );
+        expect(arrayResponseAppointment?.length).toBeGreaterThanOrEqual(
+            arrayAppointment?.length,
         );
     });
 });
