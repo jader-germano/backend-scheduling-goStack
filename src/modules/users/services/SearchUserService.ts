@@ -4,16 +4,16 @@ import IUsersRepository from '../repositories/IUsersRepository';
 
 @injectable()
 export default class SearchUserService {
-	constructor(
-		@inject('UsersRepository')
-		private usersRepository: IUsersRepository) { }
+    constructor(
+        @inject('UsersRepository')
+        private usersRepository: IUsersRepository,
+    ) {}
 
-	public async search(id: string): Promise<User | undefined> {
-		return this.usersRepository.findUserById(id);
-	}
+    public async search(id: string): Promise<User | undefined> {
+        return this.usersRepository.findUserById(id);
+    }
 
-	public async searchAll(): Promise<User[] | undefined> {
-		return this.usersRepository.find();
-	}
-
+    public async searchAll(): Promise<User[] | undefined> {
+        return this.usersRepository.find();
+    }
 }

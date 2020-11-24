@@ -11,9 +11,7 @@ export default class AppointmentsController {
         response: Response,
     ): Promise<Response> {
         const { provider_id, date } = request.body;
-
         const parsedDate = parseISO(date);
-
         const createAppointmentsService = container.resolve(
             CreateAppointmentsService,
         );
@@ -34,8 +32,7 @@ export default class AppointmentsController {
             SearchAppointmentsService,
         );
 
-        const appointments = searchAppointmentsService.searchAll();
-
+        const appointments = await searchAppointmentsService.searchAll();
         return response.json(appointments);
     }
 
@@ -48,7 +45,7 @@ export default class AppointmentsController {
             SearchAppointmentsService,
         );
 
-        const appointment = searchAppointmentsService.search(id);
+        const appointment = await searchAppointmentsService.search(id);
 
         const returnResponse = appointment || {
             message: `No appointment found.`,
@@ -65,7 +62,6 @@ export default class AppointmentsController {
         const deleteAppointmentsService = container.resolve(
             DeleteAppointmentsService,
         );
-        //TODO: criar services
         const removed = await deleteAppointmentsService.delete(id);
 
         const removedStatus = {

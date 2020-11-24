@@ -25,7 +25,6 @@ class AppointmentsRepository implements IAppointmentsRepository {
             where: { id },
         });
         return appointment;
-
     }
 
     public async findByDateAndProvider(
@@ -42,7 +41,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
     public async findAll(): Promise<Appointment[] | undefined> {
         const findAppointment = await this.ormRepository.find();
 
-        return findAppointment || null;
+        return findAppointment;
     }
 
     public async removeAppointment(id: string): Promise<boolean> {
