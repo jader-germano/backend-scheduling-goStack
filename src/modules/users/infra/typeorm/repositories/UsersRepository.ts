@@ -30,10 +30,6 @@ export default class UsersRepository implements IUsersRepository {
         return user || undefined;
     }
 
-    public async findAllUsers(): Promise<User[] | undefined> {
-        return (await this.ormRepository.find()) || undefined;
-    }
-
     public async create({
         name,
         email,

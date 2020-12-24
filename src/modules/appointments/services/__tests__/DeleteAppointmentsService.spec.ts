@@ -17,6 +17,6 @@ describe('DeleteAppointment', () => {
             provider_id: '12345',
         });
 
-        expect(await deleteAppointment.delete(appointment.id)).toBeTruthy();
+        expect(deleteAppointment.delete(appointment.id)).toBeTruthy();
     });
 });

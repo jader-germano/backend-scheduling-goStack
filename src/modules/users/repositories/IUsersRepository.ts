@@ -2,7 +2,6 @@ import User from '@modules/users/infra/typeorm/entities/User';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
 export default interface IUsersRepository {
-    findAllUsers(): Promise<User[] | undefined>;
 
     find(): Promise<User[] | undefined>;
 
