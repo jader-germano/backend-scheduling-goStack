@@ -41,13 +41,14 @@ export default class UsersRepository implements IUsersRepository {
 	public async saveUser(user: User): Promise<User | undefined> {
 		const findIndex = this.users.findIndex(user => user.id === user.id);
 		this.users[findIndex] = user;
+
 		return user;
 	}
 
 	public async delete(id: string): Promise<boolean | undefined> {
 		const findIndex = this.users.findIndex(user => user.id === user.id);
-
 		this.users.slice(findIndex, 1);
+
 		return !!findIndex;
 	}
 

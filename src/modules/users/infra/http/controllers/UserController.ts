@@ -1,7 +1,7 @@
 import CreateUserService from '@modules/users/services/CreateUserService';
 import DeleteUserService from '@modules/users/services/DeleteUserService';
 import SearchUserService from '@modules/users/services/SearchUserService';
-import UpdateAvatarUserService from '@modules/users/services/UpdateAvatarUserService';
+import UpdateAvatarUserService from '@modules/users/services/UpdateUserAvatarService';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
