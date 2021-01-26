@@ -26,7 +26,7 @@ export default class CreateUserService {
             name,
             email,
             password: hashedPassword,
-        });
+        }) as User;
         await usersRepository.save(user);
         delete user.password;
         return user;
